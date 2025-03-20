@@ -1,24 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../public/style.css" />
-    <title>Timeline</title>
-  </head>
+ <%- include("partials/head") %>
+
   <body>
     <div class="container">
-      <h2>Timeline</h2>
+      <h1>Timeline</h1>
       <hr />
+      <form action="/add-new-message" method="POST">
+        <div class="post">
+          <label for="name"><strong>Name</strong></label>
+          <input type="text" id="name" name="name" />
+        </div>
+        <div class="post">
+          <label for="textarea"><strong>Post a message</strong></label>
+          <textarea name="message" id="textarea" cols="60" rows="5"></textarea>
+        </div>
+        <button>Post a message</button>
+      </form>
       <% if(users.length>0){ %> <%users.forEach(user=>{ %>
-      <h3><%= user.name%> - <%= user.createdAt%></h3>
+        <div class="user-info">
+      <h3><%= user.name%> - <%= user.date.toDateString() %></h3>
       <p><%= user.message%></p>
-
+      <div class="btns">
+      <a href="/delete/message/<%= user.id%>"><button class="del-btn">Delete</button></a>
+      <a href="/update/message/<%= user.id%>"><button class="edit-btn">Edit</button></a>
+    </div>
+    </div>
       <% }) %> <%} else {%>
 
       <p>No data to be displayed</p>
 
       <% }%>
     </div>
+    <%- include("partials/footer")  %>
   </body>
 </html>
