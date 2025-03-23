@@ -1,12 +1,14 @@
-
-const messageModel = require('../models/messageModel');
+const MessageModel = require('../models/messageModel');
+const CommentModel = require('../models/commentModel');
 
 const homePage = (req, res) => {
-  messageModel
-    .find()
+  MessageModel.find()
+    .sort({ date: -1 })
+    .populate('comments')
+
     .then((result) => {
       // if the request comes from Postman,return JSON
-      if (req.query.format==="json") {
+      if (req.query.format === 'json') {
         res.json(result);
       } else {
         res.render('homepage', { users: result });
@@ -16,9 +18,9 @@ const homePage = (req, res) => {
 };
 
 const addNewMessage = (req, res) => {
-  console.log('Received POST');
+  console.log('Received POST', req.body);
   const { name, message } = req.body;
-  let newMessage = new messageModel({
+  let newMessage = new MessageModel({
     name: name,
     message: message,
     date: new Date(),
@@ -27,15 +29,14 @@ const addNewMessage = (req, res) => {
     .save()
     .then((savedMessage) => {
       // postman request
-      if (req.query.format === "json") {
+      if (req.query.format === 'json') {
         res.status(201).json({
           success: true,
-          message: "Message added",
-          data: savedMessage
+          message: 'Message added',
+          data: savedMessage,
         });
       } else {
-      
-        res.redirect('/')
+        res.redirect('/');
       }
     })
     .catch((err) => console.log(err));
@@ -43,15 +44,14 @@ const addNewMessage = (req, res) => {
 
 const deleteMessage = (req, res) => {
   console.log(req.params.id);
-  messageModel
-    .findByIdAndDelete(req.params.id)
+  MessageModel.findByIdAndDelete(req.params.id)
     .then((deletedMessage) => {
       // for postman request
-      if (req.query.format === "json") {
+      if (req.query.format === 'json') {
         res.status(200).json({
           success: true,
-          message: "Message deleted",
-          data: deletedMessage
+          message: 'Message deleted',
+          data: deletedMessage,
         });
       } else {
         res.redirect('/');
@@ -61,8 +61,7 @@ const deleteMessage = (req, res) => {
 };
 
 const editMessagePage = (req, res) => {
-  messageModel
-    .findById(req.params.id)
+  MessageModel.findById(req.params.id)
     .then((messageInfo) => {
       res.render('edit-message', { message: messageInfo });
     })
@@ -70,21 +69,55 @@ const editMessagePage = (req, res) => {
 };
 
 const editMessageForm = (req, res) => {
-  messageModel
-    .findByIdAndUpdate(req.params.id, req.body, { new: true })
+  MessageModel.findByIdAndUpdate(req.params.id, req.body, { new: true })
     .then((updatedMessage) => {
-      if (req.query.format === "json"){
+      if (req.query.format === 'json') {
         res.status(200).json({
           succes: true,
-          message: "Message updated",
-          data: updatedMessage
+          message: 'Message updated',
+          data: updatedMessage,
         });
       } else {
         res.redirect('/');
       }
-      
     })
     .catch((err) => console.log(err));
+};
+
+
+
+const addComments = (req, res) => {
+  const id = req.params.id.trim();
+  console.log(id);
+  if (req.body.body && id) {
+    const newComment = new CommentModel({
+      body: req.body.body,
+      message: id, 
+    });
+
+    newComment
+      .save()
+      .then(savedComment => {
+        // Now find the message and push the comment's ID
+        return MessageModel.findById(id)
+      .then(message => {
+          if (!message) {
+            res.status(404).send('Message not found');
+            return;
+          }
+
+          message.comments.push(savedComment._id);
+
+          return message.save()
+       .then(() => {
+            res.redirect('/');
+          });
+        });
+      })
+        .catch(err =>console.log(err));
+  } else {
+    res.status(400).send('Comment body is missing or invalid ID');
+  }
 };
 
 const notFoundPage = (req, res) => {
@@ -97,5 +130,6 @@ module.exports = {
   deleteMessage,
   editMessagePage,
   editMessageForm,
+  addComments,
   notFoundPage,
 };

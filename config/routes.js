@@ -1,24 +1,27 @@
-const express = require("express");
-const router = express.Router();
-const controller = require("../controllers/controller");
+const express = require('express');
+const route = express.Router();
+const userController = require('../controllers/userController');
 
+// routes
 
-router.get('/', controller.homePage);
-router.get("/about", controller.aboutBlogs);
-router.get("/blogs", controller.blogs);
+route.get('/', userController.homePage);
 
-router.get('/blogs/create', controller.createBlogs);
-router.post("/blogs", controller.createBlogsPost);
+route.post('/add-new-message', userController.addNewMessage);
 
-router.get("/blogs/:id", controller.renderDetails)
-router.post("/blogs/delete/:id", controller.deleteBlog);
-router.get("/add-blog",controller.addBlogs)
- 
-router.get("/all-blogs", controller.allBlogs);
+route.get('/update/message/:id', userController.editMessagePage);
 
+route.post('/edit-message-form/:id', userController.editMessageForm);
 
-router.get("/single-blog",controller.singleBlog)
-router.get("/*", controller.pageNotFound);
+// For postman delete method
+route.delete('/delete/message/:id', userController.deleteMessage);
 
+// for the browser  button
+// delete message
+route.get('/delete/message/:id', userController.deleteMessage);
 
-module.exports = router;
+// Add comments
+route.post('/add/new-comments/:id', userController.addComments);
+
+route.get('*', userController.notFoundPage);
+
+module.exports = route;

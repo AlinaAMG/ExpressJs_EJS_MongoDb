@@ -1,154 +1,114 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing: border-box;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-body{
-    width:80%;
-    margin:30px auto;
+body {
+  width: 80%;
+  margin: 20px auto;
+  border: 3px solid black;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.user-info {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
 
+  background-color: azure;
+  padding: 20px;
+  margin: 20px auto;
 }
-nav{
-    display:flex;
-    justify-content: space-between;
-    align-items: center;
-    height:100px;
-    background-color: rgb(218, 218, 234);
-    padding:20px;
-
+.user-info p {
+  margin-left: 40px;
 }
-nav a{
-    font-size:24px;
-    text-decoration: none;
-    color:#222;
-    
+.comments-form form {
+  width: 50vw;
+  padding: 20px;
 }
-nav ul{
-    list-style: none;
-    display:flex;
-   gap:15px;
-   font-size:20px;
-
-}
-nav ul li a:hover{
-    color:blue;
-    text-decoration: underline;
+.comments-form form textarea {
+  width: 100%;
+  
 }
 
-nav p{
-    margin-top:10px;
-    color:#777;
-    
+.comments-form form button {
+  width: 30%;
+  margin-bottom: 20px;
+  font-size:18px;
 }
-.blogs-content{
-    height:500px;
-    margin:50px auto;
-    width:80%;
-    display:flex;
-    flex-direction: column;
-   
+.comments-form ul {
+  list-style: none;
+  text-align: left;
+  background-color: rgb(247, 250, 251);
+  
+  padding: 20px;
 }
-.blogs-content h2{
-    text-align: center;
-    font-size: 26px;
-    margin-bottom:20px;
+h1 {
+  margin: 20px;
 }
-.blogs-content p{
-    font-size:22px;
-    text-align: center;
-}
-.details-content h2{
-    font-size:28px;
-}
-.content p {
-    font-size:22px;
+hr {
+  border: 2px solid black;
 }
 
-.blogs-content .title{
-    text-align: center;
-    margin-top:20px;
-    color:#333;
-}
-.about-content{
-   width:80%;
-   height:70vh;
-   margin:30px auto;
-
-}
-.about-content p{
-    margin-top:20px;
+h3 {
+  margin: 40px 0 10px 40px;
+  color: rgb(50, 49, 49);
 }
 
+form {
+  /* height: 300px; */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 
-.create-blog-content form{
-    display:flex;
-    flex-direction: column;
-    width:100%;
-    justify-content: center;
-    align-items: center;
-    gap:10px;
-   
-    margin-top:20px;
+  align-items: center;
+  margin-top: 30px;
 }
-.create-blog-content form label{
-    font-weight: 600;
-    margin-top:20px;
+.post {
+  width: 80%;
 }
-.create-blog-content form input,
-.create-blog-content form textarea{
-    padding:10px;
-    width:50%;
+.post-message{
+  width:20%;
 }
-.create-blog-content form button{
-    padding:10px;
-    background-color: rgb(52, 128, 228);
-    color:#fff;
-    font-size: 18px;
-    width:50%;
-    margin-top:10px;
-    border:none;
-    cursor: pointer;
-    border-radius: 10px;
+form input,
+form textarea,
+button {
+  padding: 10px;
+  font-size: 20px;
 }
-.create-blog-content form button:hover{
-   background-color:rgb(102, 167, 242);
-   transform: scale(0.98);
+button {
+  background-color: rgb(81, 166, 246);
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 80%;
+  border-radius: 10px;
 }
-.details-content{
-   
-    display:flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-top:40px;
-
-
+button:hover {
+  background-color: rgb(159, 215, 251);
+  color: #222;
 }
-.details-content p{
-    margin:20px 0 20px 0;
+.del-btn,
+.edit-btn {
+  width: 80%;
+  margin: 30px;
+  border-radius: 10px;
 }
-.del-btn{
-    padding:10px 30px 10px;
-    background-color:rgb(214, 89, 89);
-    color:#fff;
-    font-size: 20px;
-    border:none;
-    border-radius: 10px;
-    margin-top:20px;
-    cursor: pointer;
-
-}
-.not-found-content{
-    font-size:28px;
-    text-align: center;
-    margin-top:30px;
-    color:rgb(245, 32, 32);
+.btns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
 }
 
-footer{
-    text-align: center;
-    font-weight: 600;
-    margin-top:300px;
-    
+.post {
+  display: flex;
+  flex-direction: column;
+}
+
+footer {
+  text-align: center;
+  margin: 30px;
+  font-weight: 600;
 }

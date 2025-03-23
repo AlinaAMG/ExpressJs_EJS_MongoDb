@@ -1,35 +1,19 @@
-const express = require('express');
-
-// express app
+const express = require("express");
 const app = express();
 const routes = require("./config/routes");
 require("./config/mongoose");
 
-// register view engine
-app.set('view engine', 'ejs');
+
+app.use("/public",express.static("public"))
+
+app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static("public"))
-// listen for requests
+app.use(express.json());
+
 app.use(routes);
 
-// Middleware
-app.use((req,res,next) => {
-    console.log("new request made:");
-    console.log("host:", req.hostname);
-    console.log("path:", req.path);
-    console.log("method:", req.method);
-    next();
+
+
+app.listen(3000, () => {
+    console.log("Server is op port 3000");
 })
-
-
-app.use((req,res,next) => {
-    console.log("in the next middleware");
-    
-    next();
-})
-
-app.listen(4000, () => {
-  console.log(`The server is running op port 4000`);
-});
-
-

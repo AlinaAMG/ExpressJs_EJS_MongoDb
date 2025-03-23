@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
- <%- include("partials/head") %>
+  <%- include("partials/head") %>
 
   <body>
     <div class="container">
@@ -13,12 +13,17 @@
         </div>
         <div class="post">
           <label for="textarea">Post a message</label>
-          <textarea value="<%= message.message %>" name="message" id="textarea" cols="60" rows="5"></textarea>
+          <textarea
+            value="<%= message.message %>"
+            name="message"
+            id="textarea"
+            cols="60"
+            rows="5"
+          ></textarea>
         </div>
         <button>Save</button>
       </form>
-     
     </div>
-    <%- include("partials/footer")  %>
+    <%- include("partials/footer") %>
   </body>
 </html>
