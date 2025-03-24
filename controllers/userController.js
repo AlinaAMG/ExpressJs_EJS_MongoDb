@@ -20,6 +20,14 @@ const homePage = (req, res) => {
 const addNewMessage = (req, res) => {
   console.log('Received POST', req.body);
   const { name, message } = req.body;
+
+  if (!req.body.message || req.body.message.length < 25) {
+    return res.status(400).send('Comment must be at least 25 characters long.');
+  }
+
+  if (!message) {
+    return res.status(400).send('Invalid message.');
+  }
   let newMessage = new MessageModel({
     name: name,
     message: message,
@@ -84,44 +92,46 @@ const editMessageForm = (req, res) => {
     .catch((err) => console.log(err));
 };
 
-
-
 const addComments = (req, res) => {
   const id = req.params.id.trim();
   console.log(id);
-  if (req.body.body && id) {
+
+  if (!req.body.body || req.body.body.length < 25) {
+    return res.status(400).send('Comment must be at least 25 characters long.');
+  }
+
+  if (!id) {
+    return res.status(400).send('Invalid blog ID.');
+  }
+  
     const newComment = new CommentModel({
       body: req.body.body,
-      message: id, 
+      message: id,
     });
 
     newComment
       .save()
-      .then(savedComment => {
+      .then((savedComment) => {
         // Now find the message and push the comment's ID
-        return MessageModel.findById(id)
-      .then(message => {
+        return MessageModel.findById(id).then((message) => {
           if (!message) {
-            res.status(404).send('Message not found');
-            return;
+            return res.status(404).send('Message not found');
           }
 
           message.comments.push(savedComment._id);
 
-          return message.save()
-       .then(() => {
-            res.redirect('/');
+          return message.save().then(() => {
+            return res.redirect('/');
           });
         });
       })
-        .catch(err =>console.log(err));
-  } else {
-    res.status(400).send('Comment body is missing or invalid ID');
-  }
+      .catch((err) => console.log(err));
+  
 };
 
+
 const notFoundPage = (req, res) => {
-  res.status(404).send('404 Page not found');
+  res.status(404).render('404', { title: '404' });
 };
 
 module.exports = {

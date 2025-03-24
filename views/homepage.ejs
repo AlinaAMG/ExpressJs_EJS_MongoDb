@@ -6,7 +6,7 @@
     <div class="container">
       <h1>Timeline</h1>
       <hr />
-      <form action="/add-new-message" method="POST">
+      <form class="add-message" action="/add-new-message" method="POST">
         <div class="post">
           <label for="name"><strong>Name</strong></label>
           <input type="text" id="name" name="name" />
@@ -22,16 +22,17 @@
         <h3><%= user.name%> - <%= user.date.toDateString() %></h3>
         <p><%= user.message%></p>
         <div class="btns">
-          <!-- <a href="/delete/message/<%= user.id%>"
+          <a href="/delete/message/<%= user.id%>"
             ><button class="del-btn">Delete</button></a
           >
           <a href="/update/message/<%= user.id%>"
             ><button class="edit-btn">Edit</button></a
-          > -->
+          >
+          </div>
           <div class="comments-form">
             <form method="POST" action="/add/new-comments/<%= user._id %>">
               <textarea name="body" placeholder="Comment..." rows="2" columns="20"></textarea>
-              <button type="submit">Post a Comment</button>
+              <button class="post-comment" type="submit">Post a Comment</button>
             </form>
             <!-- Show the comments -->
             <% if(user.comments.length>0){ %>
@@ -42,7 +43,7 @@
             </ul>
             <% } %>
           </div>
-        </div>
+       
       </div>
       <% }) %> <%} else {%>
 
