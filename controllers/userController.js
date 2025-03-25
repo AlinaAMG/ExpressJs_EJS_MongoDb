@@ -5,15 +5,7 @@ const homePage = (req, res) => {
   MessageModel.find()
     .sort({ date: -1 })
     .populate('comments')
-
-    .then((result) => {
-      // if the request comes from Postman,return JSON
-      if (req.query.format === 'json') {
-        res.json(result);
-      } else {
-        res.render('homepage', { users: result });
-      }
-    })
+    .then((result) =>  res.render('homepage', { users: result }))
     .catch((err) => console.log(err));
 };
 
@@ -35,36 +27,14 @@ const addNewMessage = (req, res) => {
   });
   newMessage
     .save()
-    .then((savedMessage) => {
-      // postman request
-      if (req.query.format === 'json') {
-        res.status(201).json({
-          success: true,
-          message: 'Message added',
-          data: savedMessage,
-        });
-      } else {
-        res.redirect('/');
-      }
-    })
+    .then(() => res.redirect('/'))
     .catch((err) => console.log(err));
 };
 
 const deleteMessage = (req, res) => {
   console.log(req.params.id);
   MessageModel.findByIdAndDelete(req.params.id)
-    .then((deletedMessage) => {
-      // for postman request
-      if (req.query.format === 'json') {
-        res.status(200).json({
-          success: true,
-          message: 'Message deleted',
-          data: deletedMessage,
-        });
-      } else {
-        res.redirect('/');
-      }
-    })
+    .then(() => res.redirect('/'))
     .catch((err) => console.log(err));
 };
 
@@ -78,17 +48,7 @@ const editMessagePage = (req, res) => {
 
 const editMessageForm = (req, res) => {
   MessageModel.findByIdAndUpdate(req.params.id, req.body, { new: true })
-    .then((updatedMessage) => {
-      if (req.query.format === 'json') {
-        res.status(200).json({
-          succes: true,
-          message: 'Message updated',
-          data: updatedMessage,
-        });
-      } else {
-        res.redirect('/');
-      }
-    })
+    .then(() => res.redirect('/'))
     .catch((err) => console.log(err));
 };
 
@@ -103,32 +63,29 @@ const addComments = (req, res) => {
   if (!id) {
     return res.status(400).send('Invalid blog ID.');
   }
-  
-    const newComment = new CommentModel({
-      body: req.body.body,
-      message: id,
-    });
 
-    newComment
-      .save()
-      .then((savedComment) => {
-        // Now find the message and push the comment's ID
-        return MessageModel.findById(id).then((message) => {
-          if (!message) {
-            return res.status(404).send('Message not found');
-          }
+  const newComment = new CommentModel({
+    body: req.body.body,
+    message: id,
+  });
 
-          message.comments.push(savedComment._id);
+  newComment
+    .save()
+    .then((savedComment) => {
+      // Now find the message and push the comment's ID
+      return MessageModel.findById(id).then((message) => {
+        if (!message) {
+          return res.status(404).send('Message not found');
+        }
+        message.comments.push(savedComment._id);
 
-          return message.save().then(() => {
-            return res.redirect('/');
-          });
+        return message.save().then(() => {
+          return res.redirect('/');
         });
-      })
-      .catch((err) => console.log(err));
-  
+      });
+    })
+    .catch((err) => console.log(err));
 };
-
 
 const notFoundPage = (req, res) => {
   res.status(404).render('404', { title: '404' });
