@@ -4,7 +4,7 @@ const userController = require('../controllers/userController');
 
 // routes
 
-route.get('/', userController.homePage);
+ route.get('/', userController.homePage);
 
 route.post('/add-new-message', userController.addNewMessage);
 

@@ -5,7 +5,7 @@ const homePage = (req, res) => {
   MessageModel.find()
     .sort({ date: -1 })
     .populate('comments')
-    .then((result) =>  res.render('homepage', { users: result }))
+    .then((result) => res.render('homepage', { users: result,message:"" }))
     .catch((err) => console.log(err));
 };
 
@@ -13,13 +13,23 @@ const addNewMessage = (req, res) => {
   console.log('Received POST', req.body);
   const { name, message } = req.body;
 
-  if (!req.body.message || req.body.message.length < 25) {
-    return res.status(400).send('Comment must be at least 25 characters long.');
+  if (!name || !message) {
+    return res.render('homepage', {
+      message: 'All fields are required',
+      users: [],
+    });
   }
 
-  if (!message) {
-    return res.status(400).send('Invalid message.');
+  if (message.length < 25) {
+    return res.render('homepage', {
+      message: 'Message must be at least 25 characters long',
+      users: [],
+    });
   }
+
+  // if (!message) {
+  //   return res.status(400).send('Invalid message.');
+  // }
   let newMessage = new MessageModel({
     name: name,
     message: message,
@@ -28,7 +38,14 @@ const addNewMessage = (req, res) => {
   newMessage
     .save()
     .then(() => res.redirect('/'))
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      if (req.body.name === '' || req.body.message === '') {
+        res.render('homepage', {
+          message: 'An error ocurred,please try again.',
+          users: [],
+        });
+      }
+    });
 };
 
 const deleteMessage = (req, res) => {
@@ -61,7 +78,7 @@ const addComments = (req, res) => {
   }
 
   if (!id) {
-    return res.status(400).send('Invalid blog ID.');
+    return res.status(400).send('Invalid comment ID.');
   }
 
   const newComment = new CommentModel({
@@ -92,7 +109,7 @@ const notFoundPage = (req, res) => {
 };
 
 module.exports = {
-  homePage,
+   homePage,
   addNewMessage,
   deleteMessage,
   editMessagePage,
