@@ -3,11 +3,11 @@ const mongoose = require('mongoose');
 const messageSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    required: [true,"Please enter a name"],
   },
   message: {
     type: String,
-    required: true,
+    required:true,
     minlength: 25,
   },
   comments: [
@@ -18,7 +18,7 @@ const messageSchema = new mongoose.Schema({
   ],
   date: {
     type: Date,
-    default: Date.now,
+    default: Date.now(),
   },
 });
 module.exports = mongoose.model('Message', messageSchema);

@@ -4,7 +4,7 @@ const apiUserController = require("../controllers/apiUserController");
 
 router.post("/add-messages", apiUserController.addMessage);
 router.get("/message", apiUserController.getMessages);
-router.get("/test", apiUserController.test)
+
 
 router.put("/edit-message-page/:id", apiUserController.editMessagePage);
 router.put("/edit-message-form/:id", apiUserController.editMessageForm);

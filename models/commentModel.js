@@ -12,6 +12,7 @@ const commentSchema = new Schema(
     message: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Message',
+      required:true,
     },
   },
   { timestamps: true }

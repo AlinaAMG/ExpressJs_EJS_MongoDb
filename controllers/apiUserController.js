@@ -122,15 +122,13 @@ const addComments = (req, res) => {
     );
 };
 
-const test = (req, res) => {
-  res.send('Hello world!!');
-};
+
 module.exports = {
   getMessages,
   addMessage,
   editMessagePage,
   editMessageForm,
   addComments,
-  deleteMessage,
-  test,
+  deleteMessage
+  
 };

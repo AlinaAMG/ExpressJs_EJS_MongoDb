@@ -4,8 +4,17 @@
 
   <body>
     <div class="container">
+      <div class="nav-bar">
       <h1>Timeline</h1>
-      <hr />
+      <h3 class="display-name">Welcome, <%= userName %></h3>
+    </div>
+      <div class="log-out-container">
+      
+        <form action="/logout" method="GET">
+          <button class="log-out">Log Out</button>
+        </form>
+      </div>
+
       <form class="add-message" action="/add-new-message" method="POST">
         <div class="post">
           <label for="name"><strong>Name</strong></label>
@@ -19,36 +28,49 @@
       </form>
 
       <% if(message){ %>
-         <p class="error-message"><%= message %></p>
-      <%} %>
-
-      <% if(users.length>0){ %> <%users.forEach(user=>{ %>
+      <p class="error-message"><%= message %></p>
+      <%} %> <% if(users.length>0){ %> <%users.forEach(user=>{ %>
       <div class="user-info">
         <h3><%= user.name%> - <%= user.date.toDateString() %></h3>
         <p><%= user.message%></p>
         <div class="btns">
-          <a href="/delete/message/<%= user.id%>"
-            ><button class="del-btn">Delete</button></a
-          >
-          <a href="/update/message/<%= user.id%>"
+          <a href="/delete/message/<%=user._id %>">
+            <button class="del-btn">Delete</button>
+          </a>
+
+          <a href="/update/message/<%= user._id%>"
             ><button class="edit-btn">Edit</button></a
           >
-          </div>
-          <div class="comments-form">
-            <form method="POST" action="/add/new-comments/<%= user._id %>">
-              <textarea name="body" placeholder="Comment..." rows="2" columns="20"></textarea>
-              <button class="post-comment" type="submit">Post a Comment</button>
-            </form>
-            <!-- Show the comments -->
-            <% if(user.comments.length>0){ %>
-            <ul>
+        </div>
+        <div class="comments-form">
+          <form method="POST" action="/add/new-comments/<%= user._id %>">
+            <textarea
+              name="body"
+              placeholder="Comment..."
+              rows="2"
+              columns="20"
+            ></textarea>
+            <button class="post-comment" type="submit">Post a Comment</button>
+          </form>
+          <!-- Show the comments -->
+
+          <% if(user.comments.length>0){ %>
+          <ul>
+            <div class="comments">
               <% user.comments.forEach(comment=>{ %>
-              <li><%= comment.body %></li>
+              <li>
+                <%= comment.body %>
+                <form action="/delete/comment/<%= comment._id %>" method="GET">
+                  <button class="btn-comment-del" type="submit">Delete</button>
+                </form>
+              </li>
+
               <% }) %>
-            </ul>
-            <% } %>
-          </div>
-       
+            </div>
+          </ul>
+
+          <% } %>
+        </div>
       </div>
       <% }) %> <%} else {%>
 

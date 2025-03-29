@@ -1,2 +1,2 @@
-Node.js + Express.js, EJS, MongoDB
+Node.js + Express.js, EJS, MongoDB, Auth, JWT
 Timeline App
